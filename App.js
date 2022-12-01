@@ -9,66 +9,54 @@ import {
   View,
 } from "react-native";
 
-const Total = ({ device, counter, counter1, counter2 }) => {
-  let totalDevice = counter + counter1 + counter2;
-  return <Text>Total Devices On: {totalDevice}</Text>;
-};
-
 const RoomDevice = ({ device, counter, setCounter }) => {
-  return (
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <Text>{device}</Text>
-      <Button
-        title="On"
-        onPress={() => setCounter((prevCounter) => setCounter(counter + 1))}
-      />
-      <View style={{ flexDirection: "col" }}></View>
-      <Button
-        title="Off"
-        onPress={() => setCounter((prevCounter) => setCounter(counter - 1))}
-      />
-    </View>
-  );
-};
+  const [squareColor, setSquareColor] = useState("red");
 
-const RoomDevice1 = ({ device, counter1, setCounter1 }) => {
   return (
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <View
+        style={{ width: 18, height: 18, backgroundColor: squareColor }}
+      ></View>
       <Text>{device}</Text>
-      <Button
-        title="On"
-        onPress={() => setCounter1((prevCounter1) => setCounter1(counter1 + 1))}
-      />
-      <View style={{ flexDirection: "col" }}></View>
-      <Button
-        title="Off"
-        onPress={() => setCounter1((prevCounter1) => setCounter1(counter1 - 1))}
-      />
-    </View>
-  );
-};
-const RoomDevice2 = ({ device, counter2, setCounter2 }) => {
-  return (
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <Text>{device}</Text>
-      <Button
-        title="On"
-        onPress={() => setCounter2((prevCounter2) => setCounter2(counter2 + 1))}
-      />
-      <View style={{ flexDirection: "col" }}></View>
-      <Button
-        title="Off"
-        onPress={() => setCounter2((prevCounter2) => setCounter2(counter2 - 1))}
-      />
+      <View style={styles.buttons}>
+        <Button
+          title="On"
+          onPress={() => {
+            setSquareColor("green");
+            if (squareColor !== "green") {
+              setCounter((prevCounter) => prevCounter + 1);
+            }
+          }}
+        />
+        <Button
+          title="Off"
+          onPress={() => {
+            setSquareColor("red");
+            if (squareColor !== "red") {
+              setCounter((prevCounter) => prevCounter - 1);
+            }
+          }}
+        />
+      </View>
     </View>
   );
 };
 
 export default function CreatingCustomComponents() {
-  const [counter, setCounter] = useState(0);
-  const [counter1, setCounter1] = useState(0);
-  const [counter2, setCounter2] = useState(0);
-  device = { Lamp: counter, Heater: counter1, TV: counter2 };
+  const [counterLamp, setLampCounter] = useState(0);
+  const [counterHeater, setHeaterCounter] = useState(0);
+  const [counterTv, setTvCounter] = useState(0);
+  const [devices, setDevices] = useState({
+    Lamp: 0,
+    Heater: 0,
+    TV: 0,
+  });
 
   return (
     <SafeAreaView>
@@ -176,21 +164,29 @@ export default function CreatingCustomComponents() {
             <View style={styles.device}>
               <RoomDevice
                 device="Living Room Lamp"
-                counter={counter}
-                setCounter={setCounter}
+                counter={counterLamp}
+                setCounter={setLampCounter}
               />
             </View>
-            <RoomDevice1
-              device="Heater"
-              counter1={counter1}
-              setCounter1={setCounter1}
-            />
-            <RoomDevice2
-              device="TV"
-              counter2={counter2}
-              setCounter2={setCounter2}
-            />
-            <Total counter={counter} counter1={counter1} counter2={counter2} />
+
+            <View style={styles.device}>
+              <RoomDevice
+                device="Heater"
+                counter={counterHeater}
+                setCounter={setHeaterCounter}
+              />
+            </View>
+            <View style={styles.device}>
+              <RoomDevice
+                device="TV"
+                counter={counterTv}
+                setCounter={setTvCounter}
+              />
+            </View>
+
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
+              Total Devices On:{counterLamp + counterHeater + counterTv}
+            </Text>
           </View>
         }
       </View>
@@ -214,8 +210,15 @@ const styles = StyleSheet.create({
 
   device: {
     backgroundColor: "khaki",
-    padding: 20,
+    padding: 10,
     marginLeft: 15,
     marginRight: 15,
+    marginBottom: 15,
+  },
+
+  buttons: {
+    //flexDirection: "column",
+    backgroundColor: "white",
+    //alignItems: "flex-end",
   },
 });
